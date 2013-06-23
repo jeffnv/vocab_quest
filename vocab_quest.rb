@@ -47,24 +47,34 @@ def show_menu (choices, instruction = "")
   result
 end
 
+def refresh_message
+  message = "Welcome to Vocab Quest\n"
+  if(@word_mgr.groups.count > 0)
+    message << "Currently using: " + @word_mgr.groups.inject("") {|res, group| res << "#{group}, "}[0..-3]
+  else
+    message << "***No words loaded, please start by entering '1' to load words."
+  end
+  
+  message << "\nPlease select an option."
+  message
+end
+
 def main_menu
   choices = ["load words", "match words to definitions"]
-  
+
   choice = -1
   while choice != choices.count do
-    choice = show_menu(choices)
-    
+    choice = show_menu(choices, refresh_message)
     case choice
     when 0
       select_file
     when 1
-      puts "not yet..."
+      WordMatchDef.new(@word_mgr).play
     end
   end
 end
 
 
 @word_mgr = WordMgr.new
-puts "Welcome to the quest!"
 main_menu
 puts "bye!"
