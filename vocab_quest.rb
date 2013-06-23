@@ -1,6 +1,6 @@
 require './word_mgr'
 WORDS_DIR = "words"
-
+@word_mgr
 
 
 def get_files
@@ -9,7 +9,10 @@ end
 
 def select_file
   files = get_files
-  show_menu(files)
+  result = show_menu(files)
+  if(result < files.count)
+    @word_mgr.load_words("#{WORDS_DIR}/#{files[result]}")
+  end
 end
 
 def show_menu (choices, instruction = "")
@@ -45,7 +48,6 @@ end
 
 def main_menu
   choices = ["load words", "match words to definitions"]
-  word_mgr = WordMgr.new
   
   choice = -1
   while choice != choices.count do
@@ -61,7 +63,7 @@ def main_menu
 end
 
 
-
+@word_mgr = WordMgr.new
 puts "Welcome to the quest!"
 main_menu
 puts "bye!"
