@@ -14,14 +14,8 @@ advanced requirements: (maybe implement someday...)
 	3. allows user to banish certain words that they know completely
 	4. user can select certain files to load or load them all for use in games
 	5. main menu displays (filename of) currently loaded words
-	6. auto loads lsat used groups of words
+	6. auto loads last used groups of words
 	7. score
 	8. maybe 6, 7 could be a state model serialized with yaml?
-
-Iteration 1 - Create main menu and word loading
-	1. The 'game' should be able to load a list of words and definitions from a text file.
-	2. The 'game' should present user with a list of game modes including 'q' to end the session.
-	3. The 'game' should start the game mode selected by the user or quit if 'q' is entered
-
-Iteration 2 - Create game mode
-TBD
+	9. uses a more clever algorithm to select words for use than random, could get the same word every time
+	10. same goes for populating random definitions
