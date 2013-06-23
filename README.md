@@ -13,6 +13,10 @@ advanced requirements: (maybe implement someday...)
 	2. keeps a list (saves at exit) trouble words and frequently uses them in game until they are mastered
 	3. allows user to banish certain words that they know completely
 	4. user can select certain files to load or load them all for use in games
+	5. main menu displays (filename of) currently loaded words
+	6. auto loads lsat used groups of words
+	7. score
+	8. maybe 6, 7 could be a state model serialized with yaml?
 
 Iteration 1 - Create main menu and word loading
 	1. The 'game' should be able to load a list of words and definitions from a text file.

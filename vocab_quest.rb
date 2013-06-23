@@ -1,4 +1,5 @@
 require './word_mgr'
+require './games'
 WORDS_DIR = "words"
 @word_mgr
 

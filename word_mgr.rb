@@ -2,7 +2,7 @@ class WordMgr
   
   attr_reader :words
   def initialize
-    @words = {}
+    @words = []
   end
   
   def load_words file
@@ -12,7 +12,7 @@ class WordMgr
       File.readlines(file).each do |line|
         if line.match(/\w+/)
           entry = line.split(' - ').map{|i|i.rstrip}
-          @words[entry[0]] = entry[1]
+          @words << [entry[0], entry[1]]
           p entry
         end
       end
