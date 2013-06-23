@@ -13,7 +13,7 @@ class WordMatchDef < Game
     defs = fake_defs << entry[1]
     defs.shuffle!
     
-    puts entry[0]
+    puts "\n\n ''#{entry[0]}''\n"
     str = ""
     defs.each_with_index do |definition, index|
       str << "  #{index + 1}. #{definition}\n"
@@ -22,10 +22,10 @@ class WordMatchDef < Game
     guess = gets.chomp.to_i - 1
     
     if(defs[guess] == entry[1])
-      puts "AWW YISS!"
+      puts "\n\nAWW YISS!\n\n"
       correct = true
     else
-      puts "oops. I'm sure you meant: #{entry[1]}"
+      puts "\n\noops. I'm sure you meant: #{entry[1]}\n\n"
       correct = false
     end
     return correct
