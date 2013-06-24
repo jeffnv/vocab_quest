@@ -24,9 +24,11 @@ class WordMatchDef < Game
     if(defs[guess] == entry[1])
       puts "\n\nAWW YISS!\n\n"
       correct = true
+      @word_mgr.matched(entry[0])
     else
       puts "\n\noops. I'm sure you meant: #{entry[1]}\n\n"
       correct = false
+      @word_mgr.missed(entry[0])
     end
     return correct
   end
