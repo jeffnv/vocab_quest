@@ -4,9 +4,9 @@ class WordMgr
   def initialize
     @words = []
     @groups = []
+    @matched = []
+    @missed = []
   end
-  
-  
   
   def load_words file
     puts file
@@ -34,5 +34,6 @@ class WordMgr
   def rand_def
     rand_entry[1]
   end
+  
   
 end
