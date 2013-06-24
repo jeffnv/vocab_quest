@@ -35,5 +35,13 @@ class WordMgr
     rand_entry[1]
   end
   
+  def matched word
+    @matched << word
+  end
+  
+  def missed word
+    @missed << word
+  end
+  
   
 end
