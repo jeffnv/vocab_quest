@@ -5,7 +5,6 @@ class WordMgr
     @words = []
     @groups = []
     @matched = []
-    @missed = []
   end
   
   def load_words file
@@ -18,13 +17,17 @@ class WordMgr
           p entry
         end
       end
+      @words.shuffle!
       @groups << file
     end
   end
   
   def rand_entry
-    count = @words.count
-    @words[rand(count)]
+    if(!@words.empty?)
+      @words[rand(@words.count)]
+    else
+      @matched[rand(@matched.count)]
+    end
   end
   
   def rand_word
@@ -35,12 +38,10 @@ class WordMgr
     rand_entry[1]
   end
   
-  def matched word
-    @matched << word
-  end
-  
-  def missed word
-    @missed << word
+  def matched matched_word
+    wrd = @words.select{|w|w[0] == matched_word}
+    @matched << wrd
+    @words.delete(wrd)
   end
   
   
