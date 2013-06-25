@@ -22,7 +22,7 @@ class WordMgr
     end
   end
   
-  def rand_entry
+  def rand_entry(num = 1)
     if(!@words.empty?)
       @words[rand(@words.count)]
     else
@@ -34,8 +34,8 @@ class WordMgr
     rand_entry[0]
   end
   
-  def rand_def
-    rand_entry[1]
+  def rand_def(num = 1)
+    (@words + @matched).sample(num).map{|i|i[1]}
   end
   
   def matched matched_word

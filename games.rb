@@ -6,10 +6,11 @@ class Game
 end
 
 class WordMatchDef < Game
+  NUM_FAKE_DEFS = 4
   def match
     fake_defs = []
     entry = @word_mgr.rand_entry
-    4.times{fake_defs << @word_mgr.rand_def}
+    fake_defs = @word_mgr.rand_def(NUM_FAKE_DEFS)
     defs = fake_defs << entry[1]
     defs.shuffle!
     
