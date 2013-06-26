@@ -41,7 +41,16 @@ class WordMgr
   def matched matched_word
     wrd = @words.select{|w|w[0] == matched_word}
     @matched << wrd[0]
+    p @matched.map{|i|i[0]}
     @words.delete(wrd[0])
+    p @words.map{|i|i[0]}
+  end
+  
+  def reset_words
+    @matched.each do |entry|
+      @words << entry unless @words.include? entry
+    end
+    @matched = []
   end
   
   

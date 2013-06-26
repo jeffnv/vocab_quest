@@ -4,18 +4,51 @@ class Game
   def initialize(words)
     @word_mgr = words
   end
-  
+  def reset
+  end
   def play 
     puts 'weeeee'
+  end
+  
+  def get_input(options, message)
+    done = false
+    puts message
+    until done do
+      input = STDIN.getch
+      if(options.include?(input.downcase[0]))
+        done = true
+      else
+        puts message
+      end
+    end
+    input
   end
 end
 
 class FlashCards < Game
   
+  def offer_reset
+    message =  "\n\nYou have gotten all the words! Reset or quit? Enter 'r' or 'q'"
+    opts = %w(r q)
+    get_input(opts, message) == 'r'
+    
+  end
+  
   def flash
     input = ''
     while !input.downcase.start_with? 'q' do
-      entry = @word_mgr.rand_entry
+      
+      if @word_mgr.words.empty?
+        if offer_reset
+          @word_mgr.reset_words
+          entry = @word_mgr.rand_entry
+        else
+          return
+        end
+      else
+        entry = @word_mgr.rand_entry
+      end
+        
       puts "\n\n'#{entry[0]}'"
       return if(STDIN.getch.downcase.start_with? 'q')
       puts "\n\n#{entry[1]}"
