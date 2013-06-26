@@ -40,8 +40,8 @@ class WordMgr
   
   def matched matched_word
     wrd = @words.select{|w|w[0] == matched_word}
-    @matched << wrd
-    @words.delete(wrd)
+    @matched << wrd[0]
+    @words.delete(wrd[0])
   end
   
   

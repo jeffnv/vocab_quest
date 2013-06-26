@@ -60,7 +60,7 @@ def refresh_message
 end
 
 def main_menu
-  choices = ["load words", "match words to definitions"]
+  choices = ["load words", "match words to definitions", "flash cards"]
 
   choice = -1
   while choice != choices.count do
@@ -70,6 +70,8 @@ def main_menu
       select_file
     when 1
       WordMatchDef.new(@word_mgr).play
+    when 2
+      FlashCards.new(@word_mgr).play
     end
   end
 end
