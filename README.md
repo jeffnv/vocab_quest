@@ -16,7 +16,3 @@ advanced requirements: (maybe implement someday...)
 	5. main menu displays (filename of) currently loaded words
 	6. auto loads last used groups of words
 	7. score
-	8. maybe 6, 7 could be a state model serialized with yaml?
-	9. uses a more clever algorithm to select words for use than random, could get the same word every time
-	10. same goes for populating random definitions
-	11. maybe we should load all words into the missed list and take words from there until it is empty?
