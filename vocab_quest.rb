@@ -1,7 +1,10 @@
-require './word_mgr'
-require './games'
+require './lib/word_mgr'
+require './lib/games'
+require './lib/feedback_mgr'
 WORDS_DIR = "words"
+FEEDBACK_DIR = "etc"
 @word_mgr
+@feedback_mgr
 
 
 def get_files
@@ -69,14 +72,15 @@ def main_menu
     when 0
       select_file
     when 1
-      WordMatchDef.new(@word_mgr).play
+      WordMatchDef.new(@word_mgr, @feedback_mgr).play
     when 2
-      FlashCards.new(@word_mgr).play
+      FlashCards.new(@word_mgr, @feedback_mgr).play
     end
   end
 end
 
 
 @word_mgr = WordMgr.new
+@feedback_mgr = FeedbackMgr.new(FEEDBACK_DIR)
 main_menu
 puts "bye!"
