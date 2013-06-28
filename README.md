@@ -16,3 +16,10 @@ advanced requirements: (maybe implement someday...)
 	5. main menu displays (filename of) currently loaded words
 	6. auto loads last used groups of words
 	7. score
+	
+	
+	
+	Sarah's Reqs:
+	1. Player history, which words missed most, ability to generate a word/def list based on words frequently missed
+	2. other games (converse of what we have)
+	3. immediate response (no pressing enter)

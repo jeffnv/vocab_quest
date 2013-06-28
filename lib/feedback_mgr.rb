@@ -5,7 +5,6 @@ class FeedbackMgr
       File.readlines(full_path).each do |line|
         result << line.rstrip
       end
-      p result
     end
     result
   end
