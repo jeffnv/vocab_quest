@@ -13,6 +13,10 @@ def get_files
   Dir.entries(WORDS_DIR).select{|file| !file.start_with?'.'}
 end
 
+def pause
+  puts "\n\npress any key to continue"
+  STDIN.getch
+end
 
 
 def show_menu (choices, instruction = "")
@@ -32,7 +36,12 @@ def show_menu (choices, instruction = "")
       puts "  #{index + 1}. #{item}"
     end
     
-    choice = STDIN.getch.to_i - 1
+    if(choices.count < 10)
+      choice = STDIN.getch.to_i - 1
+    else
+       choice = gets.chomp.to_i - 1
+    end
+    
     if(choice >= 0 && choice < choices.count)
       result = choice
       done = true
@@ -73,8 +82,6 @@ def show_missed_history
   @word_mgr.missed.each do |entry, miss_count|
     puts "#{entry[0]}".ljust(15) + miss_count.to_s.rjust(15)
   end
-  puts "\n\npress any key to continue"
-  STDIN.getch
 end
 
 def history
@@ -86,15 +93,14 @@ def history
     when 0
       show_missed_history
     when 1
-      puts "file being created..."
+      @word_mgr.generate_missed_word_list(WORDS_DIR)
     when 2
       if (show_menu(["yes"], "Permanetly reset missed words list?") == 0) 
         @word_mgr.reset_missed 
         puts "missed history reset"
       end
-      puts "\n\npress any key to continue"
-      STDIN.getch
     end
+    pause
   end
   
 end

@@ -1,5 +1,5 @@
 require 'yaml'
-
+require 'time'
 class WordMgr
   
   attr_reader :words, :groups, :matched, :missed
@@ -21,7 +21,6 @@ class WordMgr
   end
   
   def initialize(path)
-    
     @state_path = path + "/state.yml"
     if(File.exists?(@state_path))
       read_state_file(@state_path)
@@ -50,6 +49,7 @@ class WordMgr
       @words.shuffle!
       @groups << file
     end
+    save
   end
   
   def rand_entry(num = 1)
@@ -72,6 +72,7 @@ class WordMgr
     wrd = @words.select{|w|w[0] == matched_word}
     @matched << wrd[0]
     @words.delete(wrd[0])
+    save
   end
   
   def miss missed_word
@@ -82,6 +83,7 @@ class WordMgr
     else
       @missed[wrd] = @missed[wrd] + 1
     end
+    save
   end
   
   def reset_words
@@ -89,13 +91,22 @@ class WordMgr
       @words << entry unless @words.include? entry
     end
     @matched = []
+    save
   end
   
   def reset_missed
     @missed = {}
+    save
   end
   
-  def generate_word_list(filename, words)
+  def generate_missed_word_list(path)
+    data = ""
+    @missed.each do |entry, miss_count|
+      data << "#{entry[0]} - #{entry[1]}\n\n"
+    end
+    filename = "#{path}/most_missed-#{DateTime.now.to_s}.txt"
+    File.open(filename, 'w'){|file| file.write(data)}
+    puts "\nmost-missed deck created: #{filename}"
   end
 
   
