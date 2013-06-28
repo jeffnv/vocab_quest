@@ -104,7 +104,7 @@ class WordMgr
     @missed.each do |entry, miss_count|
       data << "#{entry[0]} - #{entry[1]}\n\n"
     end
-    filename = "#{path}/most_missed-#{DateTime.now.to_s}.txt"
+    filename = "#{path}/most_missed-#{DateTime.now.strftime("%m-%d-%y %H%M%S")}.txt"
     File.open(filename, 'w'){|file| file.write(data)}
     puts "\nmost-missed deck created: #{filename}"
   end
