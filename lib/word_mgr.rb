@@ -36,7 +36,10 @@ class WordMgr
   
   def load_words file
     puts file
-    if(File.exists?(file) && !@groups.include?(file))
+    @groups = []
+    @words = []
+    @matched = []
+    if(File.exists?(file))
       File.readlines(file).each do |line|
         if line.match(/\w+/)
           entry = line.split(' - ').map{|i|i.rstrip}
@@ -72,7 +75,13 @@ class WordMgr
   end
   
   def miss missed_word
+    wrd = @words.select{|w| w[0] == missed_word}[0]
     
+    if(@missed[wrd] == nil)
+      @missed[wrd] = 1
+    else
+      @missed[wrd] = @missed[wrd] + 1
+    end
   end
   
   def reset_words
@@ -82,6 +91,12 @@ class WordMgr
     @matched = []
   end
   
+  def reset_missed
+    @missed = {}
+  end
+  
+  def generate_word_list(filename, words)
+  end
 
   
   

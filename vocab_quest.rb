@@ -1,6 +1,7 @@
 require './lib/word_mgr'
 require './lib/games'
 require './lib/feedback_mgr'
+require 'io/console'
 WORDS_DIR = "words"
 FEEDBACK_DIR = "etc"
 STATE_DIR = "lib"
@@ -12,13 +13,7 @@ def get_files
   Dir.entries(WORDS_DIR).select{|file| !file.start_with?'.'}
 end
 
-def select_file
-  files = get_files
-  result = show_menu(files)
-  if(result < files.count)
-    @word_mgr.load_words("#{WORDS_DIR}/#{files[result]}")
-  end
-end
+
 
 def show_menu (choices, instruction = "")
   instruction  = "Please enter the number of your choice." if instruction.empty?
@@ -28,7 +23,7 @@ def show_menu (choices, instruction = "")
   result = 0
   
   until done do
-    # system("clear")
+    system("clear")
     puts "\n"
     puts message unless message.empty?
     puts instruction
@@ -37,7 +32,7 @@ def show_menu (choices, instruction = "")
       puts "  #{index + 1}. #{item}"
     end
     
-    choice = gets.chomp.to_i - 1
+    choice = STDIN.getch.to_i - 1
     if(choice >= 0 && choice < choices.count)
       result = choice
       done = true
@@ -63,19 +58,62 @@ def refresh_message
   message
 end
 
+def select_file
+  files = get_files
+  result = show_menu(files)
+  if(result < files.count)
+    @word_mgr.load_words("#{WORDS_DIR}/#{files[result]}")
+  end
+end
+
+def show_missed_history
+  system("clear")
+  puts "Most Frequently Missed Words"
+  puts "Word                Miss Count"
+  @word_mgr.missed.each do |entry, miss_count|
+    puts "#{entry[0]}".ljust(15) + miss_count.to_s.rjust(15)
+  end
+  puts "\n\npress any key to continue"
+  STDIN.getch
+end
+
+def history
+  options = ["Show most frequently missed words", "generate list of missed words", "reset missed words"]
+  result = -1
+  while result!= options.count do
+    result = show_menu(options)
+    case result
+    when 0
+      show_missed_history
+    when 1
+      puts "file being created..."
+    when 2
+      if (show_menu(["yes"], "Permanetly reset missed words list?") == 0) 
+        @word_mgr.reset_missed 
+        puts "missed history reset"
+      end
+      puts "\n\npress any key to continue"
+      STDIN.getch
+    end
+  end
+  
+end
+
 def main_menu
-  choices = ["load words", "match words to definitions", "flash cards"]
+  choices = ["match words to definitions", "flash cards","select deck", "history"]
 
   choice = -1
   while choice != choices.count do
     choice = show_menu(choices, refresh_message)
     case choice
     when 0
-      select_file
-    when 1
       WordMatchDef.new(@word_mgr, @feedback_mgr).play
-    when 2
+    when 1
       FlashCards.new(@word_mgr, @feedback_mgr).play
+    when 2
+      select_file
+    when 3
+      history
     end
   end
   

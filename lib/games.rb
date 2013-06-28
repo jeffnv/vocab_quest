@@ -24,9 +24,6 @@ class Game
     end
     input
   end
-end
-
-class FlashCards < Game
   
   def offer_reset
     message =  "\n\nYou have gotten all the words! Reset or quit? Enter 'r' or 'q'"
@@ -35,22 +32,31 @@ class FlashCards < Game
     
   end
   
+  def get_entry
+    entry = nil
+    if @word_mgr.words.empty?
+      if offer_reset
+        @word_mgr.reset_words
+        entry = @word_mgr.rand_entry
+      end
+    else
+      entry = @word_mgr.rand_entry
+    end
+    entry
+  end
+  
+end
+
+class FlashCards < Game
   def flash
+    feedback = ''
     input = ''
     while !input.downcase.start_with? 'q' do
       
-      if @word_mgr.words.empty?
-        if offer_reset
-          @word_mgr.reset_words
-          entry = @word_mgr.rand_entry
-        else
-          return
-        end
-      else
-        entry = @word_mgr.rand_entry
-      end
-        
-      puts "\n\n'#{entry[0]}'"
+      entry = get_entry
+      return if entry == nil
+      system("clear")
+      puts "#{feedback}\n\n'#{entry[0]}'"
       return if(STDIN.getch.downcase.start_with? 'q')
       puts "\n\n#{entry[1]}"
       
@@ -59,17 +65,17 @@ class FlashCards < Game
       until done do
         input = STDIN.getch
         if(input.downcase.start_with? 'y')
-          puts @feedback_mgr.yes
+          feedback =  @feedback_mgr.yes
           @word_mgr.match(entry[0])
           done = true
         elsif(input.downcase.start_with? 'n')
-          puts @feedback_mgr.no
+          feedback = @feedback_mgr.no
           @word_mgr.miss(entry[0])
           done = true
         elsif(input.downcase.start_with? 'q')
           done = true
         else
-          puts "Please enter 'y' or 'n' to tell me if you got it or not. Enter 'q' to quit."
+          feedback = "Please enter 'y' or 'n' to tell me if you got it or not. Enter 'q' to quit."
         end
       end
     end
@@ -91,37 +97,36 @@ class WordMatchDef < Game
   NUM_FAKE_DEFS = 4
   def match
     fake_defs = []
-    entry = @word_mgr.rand_entry
-    fake_defs = @word_mgr.rand_def(NUM_FAKE_DEFS)
-    defs = fake_defs << entry[1]
-    defs.shuffle!
+    feedback = ''
+    @rounds.times do
+      entry = get_entry
+      return if entry == nil
     
-    puts "\n\n ''#{entry[0]}''\n"
-    str = ""
-    defs.each_with_index do |definition, index|
-      str << "  #{index + 1}. #{definition}\n"
-    end
-    puts str + "Enter matching number and press enter:"
-    guess = gets.chomp.to_i - 1
+      fake_defs = @word_mgr.rand_def(NUM_FAKE_DEFS)
+      defs = fake_defs << entry[1]
+      defs.shuffle!
+      system("clear")
+      puts "#{feedback}\n\n ''#{entry[0]}''\n\n"
+      str = ""
+      defs.each_with_index do |definition, index|
+        str << "  #{index + 1}. #{definition}\n"
+      end
+      puts str + "\nEnter matching number and press enter:"
+      guess = STDIN.getch.chomp.to_i - 1
     
-    if(defs[guess] == entry[1])
-      puts "\n\n#{@feedback_mgr.yes}\n\n"
-      correct = true
-      @word_mgr.match(entry[0])
-    else
-      puts "\n\n#{@feedback_mgr.no}\nI'm sure you meant: #{entry[1]}\n\n"
-      @word_mgr.miss(entry[0])
-      correct = false
+      if(defs[guess] == entry[1])
+        feedback =  "\n\n#{@feedback_mgr.yes}\n\n"
+        @word_mgr.match(entry[0])
+      else
+        feedback =  "\n\n#{@feedback_mgr.no}\nI'm sure you meant: #{entry[1]}\n\n"
+        @word_mgr.miss(entry[0])
+      end
     end
-    return correct
   end
   
   def play
     puts "How many rounds?"
-    score = 0
     @rounds = gets.chomp.to_i
-    @rounds.times do
-      score += 1 if match
-    end
+    match
   end
 end
