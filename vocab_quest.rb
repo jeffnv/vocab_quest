@@ -3,6 +3,7 @@ require './lib/games'
 require './lib/feedback_mgr'
 WORDS_DIR = "words"
 FEEDBACK_DIR = "etc"
+STATE_DIR = "lib"
 @word_mgr
 @feedback_mgr
 
@@ -77,10 +78,13 @@ def main_menu
       FlashCards.new(@word_mgr, @feedback_mgr).play
     end
   end
+  
+  @word_mgr.save
 end
 
-
-@word_mgr = WordMgr.new
+system("clear")
+@word_mgr = WordMgr.new(STATE_DIR)
 @feedback_mgr = FeedbackMgr.new(FEEDBACK_DIR)
 main_menu
 puts "bye!"
+system("clear")

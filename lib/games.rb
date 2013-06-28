@@ -60,10 +60,11 @@ class FlashCards < Game
         input = STDIN.getch
         if(input.downcase.start_with? 'y')
           puts @feedback_mgr.yes
-          @word_mgr.matched(entry[0])
+          @word_mgr.match(entry[0])
           done = true
         elsif(input.downcase.start_with? 'n')
           puts @feedback_mgr.no
+          @word_mgr.miss(entry[0])
           done = true
         elsif(input.downcase.start_with? 'q')
           done = true
@@ -106,9 +107,10 @@ class WordMatchDef < Game
     if(defs[guess] == entry[1])
       puts "\n\n#{@feedback_mgr.yes}\n\n"
       correct = true
-      @word_mgr.matched(entry[0])
+      @word_mgr.match(entry[0])
     else
-      puts "\n\n#{@feedback_mgr.no} I'm sure you meant: #{entry[1]}\n\n"
+      puts "\n\n#{@feedback_mgr.no}\nI'm sure you meant: #{entry[1]}\n\n"
+      @word_mgr.miss(entry[0])
       correct = false
     end
     return correct

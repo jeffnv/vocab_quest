@@ -1,10 +1,37 @@
+require 'yaml'
+
 class WordMgr
   
-  attr_reader :words, :groups
-  def initialize
-    @words = []
-    @groups = []
-    @matched = []
+  attr_reader :words, :groups, :matched, :missed
+  
+  def read_state_file(path)
+    state = YAML::load_file(path)
+    
+    @words = state.words
+    @groups = state.groups
+    @matched = state.matched
+    @missed = state.missed
+    
+    #values.each{|k,v| instance_variable_set("@#{k}", v)}
+  end
+  
+  def save
+    data = YAML::dump(self)
+    File.open(@state_path, 'w') { |file| file.write data }
+  end
+  
+  def initialize(path)
+    
+    @state_path = path + "/state.yml"
+    if(File.exists?(@state_path))
+      read_state_file(@state_path)
+    else
+      @words = []
+      @groups = []
+      @matched = []
+      @missed = Hash.new(0)
+      save
+    end
   end
   
   def load_words file
@@ -38,10 +65,14 @@ class WordMgr
     (@words + @matched).sample(num).map{|i|i[1]}
   end
   
-  def matched matched_word
+  def match matched_word
     wrd = @words.select{|w|w[0] == matched_word}
     @matched << wrd[0]
     @words.delete(wrd[0])
+  end
+  
+  def miss missed_word
+    
   end
   
   def reset_words
@@ -50,6 +81,8 @@ class WordMgr
     end
     @matched = []
   end
+  
+
   
   
 end
