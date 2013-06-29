@@ -68,9 +68,9 @@ end
 def refresh_message
   message = "Welcome to Vocab Quest\n"
   if(@word_mgr.groups.count > 0)
-    message << "Currently using: " + @word_mgr.groups.inject("") {|res, group| res << "#{group}, "}[0..-3]
+    message << "\nCurrently using: " + @word_mgr.groups.inject("") {|res, group| res << "#{group}, "}[0..-3]
   else
-    message << "***No words loaded, please start by entering '1' to load words."
+    message << "\n***No words loaded, please start by selecting a deck!!!***\n"
   end
   
   message << "\nPlease select an option."
