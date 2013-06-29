@@ -55,7 +55,7 @@ class FlashCards < Game
       
       entry = get_entry
       return if entry == nil
-      system("clear")
+      system($clear)
       puts "#{feedback}\n\n'#{entry[0]}'"
       return if(STDIN.getch.downcase.start_with? 'q')
       puts "\n\n#{entry[1]}"
@@ -105,7 +105,7 @@ class WordMatchDef < Game
       fake_defs = @word_mgr.rand_def(NUM_FAKE_DEFS)
       defs = fake_defs << entry[1]
       defs.shuffle!
-      system("clear")
+      system($clear)
       puts "#{feedback}\n\n ''#{entry[0]}''\n\n"
       str = ""
       defs.each_with_index do |definition, index|

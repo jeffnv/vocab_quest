@@ -17,6 +17,7 @@ A simple GRE vocabulary test to help me practice ruby
 	-done 6. auto loads last used groups of words
 	7. score
 	8. screen clearing works in windows/mac
+	9. prevent play if no words loaded
 	
 	
 	

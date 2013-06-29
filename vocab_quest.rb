@@ -2,12 +2,22 @@ require './lib/word_mgr'
 require './lib/games'
 require './lib/feedback_mgr'
 require 'io/console'
+require './lib/os_finder.rb'
+#include OS
 WORDS_DIR = "words"
 FEEDBACK_DIR = "etc"
 STATE_DIR = "lib"
 @word_mgr
 @feedback_mgr
 
+
+def set_up_screen_variable
+  if OS.unix? 
+    $clear = 'clear'
+  else #windows
+    $clear = 'cls'
+  end
+end
 
 def get_files
   Dir.entries(WORDS_DIR).select{|file| !file.start_with?'.'}
@@ -27,7 +37,7 @@ def show_menu (choices, instruction = "")
   result = 0
   
   until done do
-    system("clear")
+    system($clear)
     puts "\n"
     puts message unless message.empty?
     puts instruction
@@ -76,7 +86,7 @@ def select_file
 end
 
 def show_missed_history
-  system("clear")
+  system($clear)
   puts "Most Frequently Missed Words"
   puts "Word                Miss Count"
   @word_mgr.missed.each do |entry, miss_count|
@@ -126,9 +136,10 @@ def main_menu
   @word_mgr.save
 end
 
-system("clear")
+set_up_screen_variable
+system($clear)
 @word_mgr = WordMgr.new(STATE_DIR)
 @feedback_mgr = FeedbackMgr.new(FEEDBACK_DIR)
 main_menu
 puts "bye!"
-system("clear")
+system($clear)
